@@ -35,15 +35,66 @@ const identityTag = (strings: TemplateStringsArray, ...values: any[]) =>
 /** {@link tw} annotates Tailwind CSS class strings. */
 const tw = identityTag
 
+enum MarkdownListType {
+	Bullet,
+	Ordered,
+}
+
 /** {@link markdownStyles} returns a Tailwind CSS class string to apply for the given Markdown token. */
 function markdownStyles(ctx: {
 	headingLevel: number | undefined
 	strong: boolean
 	em: boolean
+	lists: MarkdownListType[]
 	pageCtx: PageContext
 	token: Token
 }): string {
-	return tw``
+	switch (ctx.token.type) {
+		case "code_inline":
+			return tw`font-mono bg-gray-300 dark:bg-gray-800 p-1 rounded`
+		case "link_open":
+			return tw`text-blue-bright dark:text-coral-bright`
+		case "paragraph_open":
+			return tw`mx-2 my-4 text-justify`
+		case "ordered_list_open":
+			return tw`ml-4 list-${
+				["decimal", "upper-alpha", "upper-roman"][
+					Math.min(ctx.lists.length - 1, 2)
+				]
+			} list-inside`
+		case "bullet_list_open":
+			return tw`ml-4 ${ctx.lists.length === 1 ? "my-4" : ""}`
+	}
+
+	if (ctx.token.type === "heading_open") {
+		switch (ctx.token.tag) {
+			case "h1":
+				return tw`mx-2 my-4 text-3xl`
+			case "h2":
+			case "h3":
+			case "h4":
+			case "h5":
+			case "h6":
+				return tw`mx-2`
+		}
+	}
+
+	if (
+		ctx.token.type === "list_item_open" &&
+		ctx.lists.at(-1) === MarkdownListType.Bullet
+	) {
+		return [
+			tw`before:content-[' '] before:inline-block before:w-1.5 before:h-1.5 before:mb-[0.17rem] before:mr-2`,
+			[
+				tw`before:rounded before:bg-black before:dark:bg-white`,
+				tw`before:rounded before:border before:border-black before:dark:border-white`,
+				tw`before:bg-black before:dark:bg-white`,
+				tw`before:border before:border-black before:dark:border-white`,
+			][Math.min(ctx.lists.length - 1, 3)],
+		].join(" ")
+	}
+
+	return ""
 }
 
 /**
@@ -79,7 +130,17 @@ async function build(signal: AbortSignal, withinWatch: boolean = false) {
 	//#endregion
 
 	const watchClient = await fs.readFile(paths.watchClient, "utf-8")
+
 	const hb = handlebars.create()
+	hb.registerHelper("empty", (s?: string) => (s?.trim().length ?? 0) === 0)
+	hb.registerHelper("linkEquals", (a, b) => {
+		function normalizeLink(link: string) {
+			if (link === ".") return false // The home pages shouldn't match anything.
+			return link.replace(/^\//, "").replace(/\/$/, "")
+		}
+		return normalizeLink(a) === normalizeLink(b)
+	})
+
 	const errors = new Map<string, any[]>()
 
 	function pushError(key: string, err: any) {
@@ -91,31 +152,6 @@ async function build(signal: AbortSignal, withinWatch: boolean = false) {
 		}
 	}
 
-	//#region Build components
-	for await (const file of await fsutil.walkFiles(paths.components)) {
-		if (checkCancelBuild()) {
-			return
-		}
-
-		if (file.entry.isDirectory()) {
-			continue
-		}
-
-		const componentName = path
-			.relative(paths.components, file.path)
-			.replace("/", "-")
-			.replace(/\.html$/, "")
-
-		try {
-			const src = await fs.readFile(file.path, "utf-8")
-			hb.registerPartial(componentName, hb.compile(src))
-		} catch (err) {
-			pushError(`component: ${componentName}`, err)
-		}
-	}
-	//#endregion
-
-	//#region Build pages
 	function parseFrontMatter(src: string): {
 		src: string
 		frontMatter: { [key: string]: any }
@@ -147,6 +183,40 @@ async function build(signal: AbortSignal, withinWatch: boolean = false) {
 		}
 	}
 
+	//#region Build components
+	for await (const file of await fsutil.walkFiles(paths.components)) {
+		if (checkCancelBuild()) {
+			return
+		}
+
+		if (file.entry.isDirectory()) {
+			continue
+		}
+
+		const componentName = path
+			.relative(paths.components, file.path)
+			.replace("/", "-")
+			.replace(/\.html$/, "")
+
+		try {
+			const srcWithFrontMatter = await fs.readFile(file.path, "utf-8")
+			const { src, frontMatter } = parseFrontMatter(srcWithFrontMatter)
+			hb.registerPartial(componentName, (context, options) =>
+				hb.compile(src)(
+					{
+						...frontMatter,
+						...context,
+					},
+					options
+				)
+			)
+		} catch (err) {
+			pushError(`component: ${componentName}`, err)
+		}
+	}
+	//#endregion
+
+	//#region Build pages
 	const mdRenderer = mdit({
 		html: true,
 	})
@@ -156,10 +226,18 @@ async function build(signal: AbortSignal, withinWatch: boolean = false) {
 			state.env.headingLevel = undefined
 			state.env.strong = false
 			state.env.em = false
+			state.env.lists = []
 
 			function walkTokens(tokens: Token[]) {
 				for (const token of tokens) {
 					try {
+						if (
+							(token.type === "bullet_list_open" ||
+								token.type === "ordered_list_open") &&
+							!token.attrGet("role")
+						) {
+							token.attrSet("role", "list")
+						}
 						switch (token.type) {
 							case "heading_open":
 								state.env.headingLevel = parseInt(token.tag.substring(1))
@@ -179,11 +257,28 @@ async function build(signal: AbortSignal, withinWatch: boolean = false) {
 							case "em_close":
 								state.env.em = false
 								break
+							case "bullet_list_open":
+								state.env.lists.push(MarkdownListType.Bullet)
+								break
+							case "ordered_list_open":
+								state.env.lists.push(MarkdownListType.Ordered)
+								break
+							case "bullet_list_close":
+							case "ordered_list_close":
+								state.env.lists.pop()
+								break
+							case "link_open":
+								const href = token.attrGet("href")
+								if (href && href.match(/^\w+:/)) {
+									token.attrSet("rel", "external noopener")
+								}
+								break
 						}
 						const styles = markdownStyles({
 							headingLevel: state.env.headingLevel,
 							strong: state.env.strong,
 							em: state.env.em,
+							lists: state.env.lists,
 							pageCtx,
 							token,
 						}).trim()
@@ -204,6 +299,7 @@ async function build(signal: AbortSignal, withinWatch: boolean = false) {
 			delete state.env.headingLevel
 			delete state.env.strong
 			delete state.env.em
+			delete state.env.lists
 		})
 	})
 
@@ -232,22 +328,26 @@ async function build(signal: AbortSignal, withinWatch: boolean = false) {
 			const ext = path.extname(file.path)
 
 			if (ext === ".md" || ext === ".html") {
-				const outputPath = path.resolve(
-					paths.build,
+				const link = path.join(
 					file.entry.name === `index${ext}`
 						? path.dirname(relativePath)
-						: relativePath.slice(0, -ext.length),
-					"index.html"
+						: relativePath.slice(0, -ext.length)
 				)
+				const outputPath = path.resolve(paths.build, link, "index.html")
 				await fs.mkdir(path.dirname(outputPath), {
 					recursive: true,
 				})
 				const srcWithFrontMatter = await fs.readFile(file.path, "utf-8")
 				const { src, frontMatter } = parseFrontMatter(srcWithFrontMatter)
-				const layout = frontMatter["layout"] || "base"
+				const layout = frontMatter["layout"] || "default"
 				const afterHB = hb.compile(
 					`{{#> layout-${layout}}}\n${src}\n{{/layout-${layout}}}`
-				)(frontMatter)
+				)({
+					page: {
+						link,
+					},
+					...frontMatter,
+				})
 				const html = ext === ".html" ? afterHB : renderMarkdown(ctx, afterHB)
 				await fs.writeFile(outputPath, withinWatch ? html + watchClient : html)
 			} else {

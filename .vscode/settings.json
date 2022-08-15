@@ -17,7 +17,6 @@
 		"mutex.js.map": true,
 		"node_modules/": true
 	},
-	"files.insertFinalNewline": true,
 	"tailwindCSS.files.exclude": ["build/**"],
 	"tailwindCSS.includeLanguages": {
 		"typescript": "javascript"
