@@ -1,5 +1,5 @@
 <script frontmatter>
-title = "Site recommendations"
+title = "Site Recommendations"
 </script>
 
 # {{title}}
