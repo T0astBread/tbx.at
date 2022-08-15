@@ -1,7 +1,46 @@
-{{#> layout-base}}
-<div class="max-w-prose mx-auto">
+<script frontmatter>
+nav = {
+    internal: [
+        { href: "/", title: "tbx.at", class: "font-bold" },
+        { href: "/posts", title: "Posts" },
+        { href: "/recommendations", title: "Other Cool Sites" },
+    ],
+    external: [
+        { href: "https://github.com/T0astBread", title: "GitHub" },
+    ],
+}
+fullwidth = false
+</script>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/main.css">
+    <title>{{#if (empty title)}}{{siteTitle}}{{else}}{{title}} - {{siteTitle}}{{/if}}</title>
+</head>
+<body class="font-mono bg-gray-50 dark:bg-black dark:text-white">
+
+<nav class="flex justify-between flex-wrap gap-x-6 gap-y-2 p-2 bg-white dark:bg-gray-800 border-b-2 border-b-coral-bright dark:border-b-sky-pale">
+    <ul class="flex flex-wrap gap-x-6 gap-y-2 text-coral-bright dark:text-sky-pale">
+        {{#each nav.internal}}
+        <li class="{{#if (linkEquals href ../page.link)}}underline{{/if}} {{class}}"><a href="{{href}}">{{title}}</a></li>
+        {{/each}}
+    </ul>
+    <ul class="flex flex-wrap gap-x-6 gap-y-2">
+        {{#each nav.external}}
+        <li class="{{class}}"><a href="{{href}}" rel="external noopener noreferrer">{{title}}</a></li>
+        {{/each}}
+    </ul>
+</nav>
+
+<main class="{{#unless fullwidth}}max-w-prose mx-auto{{/unless}}">
 
 {{> @partial-block}}
 
-</div>
-{{/layout-base}}
+</main>
+
+</body>
+</html>
