@@ -1,0 +1,7 @@
+{
+	"front matter": {
+		"prefix": "frontmatter",
+		"scope": "html,markdown",
+		"body": ["<script frontmatter>", "$0", "</script>"]
+	}
+}

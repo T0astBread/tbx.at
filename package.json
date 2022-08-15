@@ -1,0 +1,16 @@
+{
+  "name": "tbx.at",
+  "private": true,
+  "devDependencies": {
+    "@types/markdown-it": "^12.2.3",
+    "@types/node": "^18.7.1",
+    "autoprefixer": "^10.4.8",
+    "chokidar": "^3.5.3",
+    "cssnano": "^5.1.13",
+    "handlebars": "^4.7.7",
+    "markdown-it": "^13.0.1",
+    "postcss": "^8.4.16",
+    "tailwindcss": "^3.1.8",
+    "typescript": "^4.7.4"
+  }
+}

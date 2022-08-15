@@ -1,0 +1,10 @@
+{
+	"include": ["build.ts"],
+	"compilerOptions": {
+		"module": "CommonJS",
+		"target": "ES2015",
+		"strict": true,
+		"sourceMap": true,
+		"noEmitOnError": true
+	}
+}

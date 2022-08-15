@@ -1,0 +1,6 @@
+/*.js
+/*.js.map
+/build/
+/node_modules/
+
+!/tailwind.config.js

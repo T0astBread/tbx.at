@@ -1,0 +1,41 @@
+<script>
+    (async () => {
+        async function fetchDate() {
+            const response = await fetch("/_watch-date.txt", { cache: "no-store" })
+            if (!response.ok) {
+                throw new Error("Failed to fetch")
+            }
+            const text = await response.text()
+            if (text.startsWith("err ")) {
+                if (location.pathname !== "/_errors.html") {
+                    const newLocation = `/_errors.html#${encodeURIComponent(location.toString())}`
+                    window.location.replace(newLocation)
+                    return undefined
+                }
+            } else if (location.pathname === "/_errors.html") {
+                window.location.replace(decodeURIComponent(location.hash.substring(1)))
+                return undefined
+            }
+            return text
+        }
+
+        const initial = await fetchDate()
+
+        while (initial) {
+            await new Promise(r => setTimeout(r, 500))
+
+            try {
+                const text = await fetchDate()
+                if (!text) {
+                    return
+                }
+                if (text !== initial) {
+                    location.reload()
+                    return
+                }
+            } catch {
+                continue
+            }
+        }
+    })()
+</script>

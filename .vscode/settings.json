@@ -1,0 +1,52 @@
+{
+	"files.associations": {
+		"*.css": "tailwindcss"
+	},
+	"files.exclude": {
+		"**/.git": true,
+		"**/.svn": true,
+		"**/.hg": true,
+		"**/CVS": true,
+		"**/.DS_Store": true,
+		"**/Thumbs.db": true,
+		"{build,fs,mutex}.js": true,
+		"{build,fs,mutex}.js.map": true,
+		"node_modules/": true
+	},
+	"files.insertFinalNewline": true,
+	"tailwindCSS.files.exclude": ["build/**"],
+	"tailwindCSS.includeLanguages": {
+		"typescript": "javascript"
+	},
+
+	"[html]": {
+		"editor.defaultFormatter": null,
+		"editor.suggest.insertMode": "replace"
+	},
+
+	"[javascript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.maxTokenizationLineLength": 2500
+	},
+
+	"[json]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.quickSuggestions": {
+			"strings": true
+		},
+		"editor.suggest.insertMode": "replace"
+	},
+
+	"[jsonc]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.quickSuggestions": {
+			"strings": true
+		},
+		"editor.suggest.insertMode": "replace"
+	},
+
+	"[typescript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"tailwindCSS.experimental.classRegex": ["tw`([^`]*)`"]
+	}
+}
