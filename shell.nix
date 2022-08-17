@@ -4,7 +4,6 @@ with pkgs;
 
 let
   build = writeShellScriptBin "build" ''
-    trap 'kill "$serve_pid" "$tsc_pid"' EXIT
     node_modules/.bin/tsc
     ${nodejs}/bin/node build.js
   '';
