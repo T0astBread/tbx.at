@@ -1,0 +1,17 @@
+{{#> layout-default }}
+
+<div class="text-center">
+
+# {{title}}
+
+<p class="text-sm my-6">Last modified: {{isoDate lastModified}}</p>
+
+</div>
+
+{{#if abstract}}
+<p class="mx-2 italic text-justify text-gray-700 dark:text-gray-200" role="doc-abstract">{{abstract}}</p>
+{{/if}}
+
+{{> @partial-block}}
+
+{{/layout-default}}

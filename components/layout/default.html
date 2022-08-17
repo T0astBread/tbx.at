@@ -10,6 +10,7 @@ nav = {
     ],
 }
 fullwidth = false
+fullheight = false
 </script>
 
 <!DOCTYPE html>
@@ -36,7 +37,7 @@ fullwidth = false
     </ul>
 </nav>
 
-<main class="{{#unless fullwidth}}max-w-prose mx-auto{{/unless}}">
+<main class="{{#unless fullwidth}}max-w-prose mx-auto{{/unless}} {{#unless fullheight}}my-12{{/unless}}">
 
 {{> @partial-block}}
 

@@ -50,8 +50,10 @@ function markdownStyles(ctx: {
 	token: Token
 }): string {
 	switch (ctx.token.type) {
+		case "fence":
+			return tw`font-mono bg-gray-200 dark:bg-gray-700 p-2 rounded block overflow-auto`
 		case "code_inline":
-			return tw`font-mono bg-gray-300 dark:bg-gray-800 p-1 rounded`
+			return tw`font-mono bg-gray-200 dark:bg-gray-600 p-1 rounded`
 		case "link_open":
 			return tw`text-blue-bright dark:text-coral-bright`
 		case "paragraph_open":
@@ -69,9 +71,11 @@ function markdownStyles(ctx: {
 	if (ctx.token.type === "heading_open") {
 		switch (ctx.token.tag) {
 			case "h1":
-				return tw`mx-2 my-4 text-3xl`
+				return tw`mx-2 my-8 text-3xl`
 			case "h2":
+				return tw`mx-2 my-4 text-2xl`
 			case "h3":
+				return tw`mx-2 my-4 text-xl`
 			case "h4":
 			case "h5":
 			case "h6":
@@ -133,6 +137,13 @@ async function build(signal: AbortSignal, withinWatch: boolean = false) {
 
 	const hb = handlebars.create()
 	hb.registerHelper("empty", (s?: string) => (s?.trim().length ?? 0) === 0)
+	hb.registerHelper(
+		"isoDate",
+		(d: Date) =>
+			`${d.getUTCFullYear()}-${(d.getUTCMonth() + 1)
+				.toString()
+				.padStart(2, "0")}-${d.getUTCDate().toString().padStart(2, "0")}`
+	)
 	hb.registerHelper("linkEquals", (a, b) => {
 		function normalizeLink(link: string) {
 			if (link === ".") return false // The home pages shouldn't match anything.

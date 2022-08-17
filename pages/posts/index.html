@@ -1,0 +1,23 @@
+<script frontmatter>
+title = "Posts"
+posts = [
+    {
+        title: "Restoring my file system with Btrfs, NixOS and Restic",
+        slug: "filesystem-restore",
+        abstract: `
+            A while ago I accidentally broke the Btrfs installation on my laptop but thanks to some safety nets of the systems I had put in place I was able to restore everything within hours. This is as a postmortem/analysis/account of that incident.
+        `,
+    }
+]
+</script>
+
+{{#> heading-1}}{{title}}{{/heading-1}}
+
+<ol class="mx-2">
+{{#each posts}}
+<li class="group my-4"><a href="{{slug}}">
+<h2 class="my-1 text-blue-bright dark:text-coral-bright group-hover:underline">{{title}}</h2>
+{{#if abstract}}<p class="pl-3 text-gray-700 dark:text-gray-200">{{abstract}}</p>{{/if}}
+</a></li>
+{{/each}}
+</ol>
