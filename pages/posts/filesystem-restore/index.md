@@ -1,8 +1,8 @@
 <script frontmatter>
-title = "Restoring my file system with Btrfs, NixOS and Restic"
+title = "Restoring my broken file system with Btrfs, NixOS and Restic"
 layout = "post"
 abstract = "A while ago I accidentally broke the Btrfs installation on my laptop but thanks to some safety nets of the systems I had put in place I was able to restore everything within hours. This is a postmortem/analysis/account of that incident."
-lastModified = new Date(Date.parse("2022-08-17"))
+lastModified = new Date(Date.parse("2022-08-19"))
 </script>
 
 ## The incident
