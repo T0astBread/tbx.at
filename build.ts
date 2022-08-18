@@ -344,7 +344,10 @@ async function build(signal: AbortSignal, withinWatch: boolean = false) {
 						? path.dirname(relativePath)
 						: relativePath.slice(0, -ext.length)
 				)
-				const outputPath = path.resolve(paths.build, link, "index.html")
+				const outputPath =
+					relativePath === `404${ext}`
+						? path.resolve(paths.build, "404.html")
+						: path.resolve(paths.build, link, "index.html")
 				await fs.mkdir(path.dirname(outputPath), {
 					recursive: true,
 				})
