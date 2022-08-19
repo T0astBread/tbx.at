@@ -19,7 +19,14 @@ fullheight = false
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">{{#if metaDescription}}
-    <meta name="description" content="{{metaDescription}}">{{/if}}
+    <meta name="description" content="{{metaDescription}}">
+    <meta name="twitter:description" content="{{metaDescription}}">{{/if}}
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@T0astBread">
+    <meta name="twitter:title" content="{{title}}">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{title}}">
+    <meta property="og:site_name" content="tbx.at">
     <link rel="stylesheet" href="/main.css">
     <title>{{#if (empty title)}}{{siteTitle}}{{else}}{{title}} - {{siteTitle}}{{/if}}</title>
     <script data-goatcounter="https://tbx.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
