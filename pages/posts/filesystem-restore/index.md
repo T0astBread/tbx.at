@@ -2,6 +2,7 @@
 title = "Restoring my broken file system with Btrfs, NixOS and Restic"
 layout = "post"
 abstract = "A while ago I accidentally broke the Btrfs installation on my laptop but thanks to some safety nets of the systems I had put in place I was able to restore everything within hours. This is a postmortem/analysis/account of that incident."
+metaDescription = "How I broke my Btrfs installation and restored it and why NixOS and Restic help with disaster recovery."
 lastModified = new Date(Date.parse("2022-08-19"))
 </script>
 
