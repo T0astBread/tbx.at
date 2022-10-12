@@ -185,6 +185,7 @@ async function build(signal: AbortSignal, withinWatch: boolean = false) {
 
 		const ctx = vm.createContext({
 			siteTitle: "tbx.at",
+			withinWatch,
 		})
 		vm.runInContext(frontMatterLines.join("\n"), ctx)
 

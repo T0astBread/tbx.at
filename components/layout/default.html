@@ -28,8 +28,8 @@ fullheight = false
     <meta property="og:title" content="{{title}}">
     <meta property="og:site_name" content="tbx.at">
     <link rel="stylesheet" href="/main.css">
-    <title>{{#if (empty title)}}{{siteTitle}}{{else}}{{title}} - {{siteTitle}}{{/if}}</title>
-    <script data-goatcounter="https://tbx.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+    <title>{{#if (empty title)}}{{siteTitle}}{{else}}{{title}} - {{siteTitle}}{{/if}}</title>{{#unless withinWatch}}
+    <script data-goatcounter="https://tbx.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>{{/unless}}
 </head>
 <body class="font-mono bg-gray-50 dark:bg-black dark:text-white">
 
