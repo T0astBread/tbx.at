@@ -232,6 +232,7 @@ async function build(signal: AbortSignal, withinWatch: boolean = false) {
 	const mdRenderer = mdit({
 		html: true,
 	})
+	mdRenderer.use(require("markdown-it-highlightjs"))
 	mdRenderer.use((m) => {
 		m.core.ruler.push("classes", (state) => {
 			const pageCtx = state.env.pageCtx as PageContext
