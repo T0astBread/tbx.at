@@ -51,7 +51,7 @@ function markdownStyles(ctx: {
 }): string {
 	switch (ctx.token.type) {
 		case "fence":
-			return tw`font-mono bg-gray-200 dark:bg-gray-700 p-2 rounded block overflow-auto`
+			return tw`font-mono bg-gray-200 dark:bg-gray-700 p-2 mx-2 my-4 rounded block overflow-auto`
 		case "code_inline":
 			return tw`font-mono bg-gray-200 dark:bg-gray-600 p-1 rounded`
 		case "link_open":
