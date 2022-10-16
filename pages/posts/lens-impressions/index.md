@@ -264,7 +264,7 @@ This is almost ideal but it still has one major downside: If you can only use pr
 
 For the time being, I think I'll stick with vanilla records (without any GHC flags) and all the awkwardness attached to them. It's a low-magic solution and it requires no extra tooling effort. Also, the programs I'll be writing now aren't huge and I don't expect to have many nested records.
 
-If I ever get GHC 9.2 working though, I might switch to `optics-core`. I'm not sure if it noticably slows down compilation (because generics are said to be slower than Template Haskell) but I'll just have to try it out. Additionally, if I get Template Haskell working I would also evaluate `optics-th`, the Template Haskell version of `optics`.
+If I ever get GHC 9.2 working though, I might switch to `optics-core`. I'm not sure if it noticeably slows down compilation (because generics are said to be slower than Template Haskell) but I'll just have to try it out. Additionally, if I get Template Haskell working I would also evaluate `optics-th`, the Template Haskell version of `optics`.
 
 {{#> ps}}
 
