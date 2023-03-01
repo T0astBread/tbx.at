@@ -8,7 +8,7 @@ I'm interested in building infrastructure with [Nix(OS)](https://nixos.org) and 
 
 Other than that I also know a thing or two about web development, Go, and Java (+ some Kotlin).
 
-In my day job I'm working on {{#> link href="https://symflower.com" rel="external noopener noreferrer"}}developer tooling to automate tasks around unit testing{{/link}}. I've worked on a few components in that company, most recently our editor integrations (VS Code and IntelliJ plugins, and a [language server](https://microsoft.github.io/language-server-protocol/)) as well as our websites.
+Professionally I've worked on web applications, developer tooling (automated software analysis systems, text editor/IDE integrations) and lots of other random stuff.
 
 Write me a nice email if you want at {{#> faux-code}}mica @ domain of this site{{/faux-code}}. My pronouns are "they/them" in English.
 
