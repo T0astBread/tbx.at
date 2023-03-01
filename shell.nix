@@ -43,4 +43,6 @@ mkShell {
     watch
     open-browser
   ];
+
+  shellHook = "\${NIX_SHELL_GLOBAL_HOOK:-}";
 }
