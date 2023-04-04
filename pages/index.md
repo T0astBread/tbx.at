@@ -10,7 +10,7 @@ Other than that I also know a thing or two about web development, Go, and Java (
 
 Professionally I've worked on web applications, developer tooling (automated software analysis systems, text editor/IDE integrations) and lots of other random stuff.
 
-Write me a nice email if you want at {{#> faux-code}}mica @ domain of this site{{/faux-code}}. My pronouns are "they/them" in English.
+Write me a nice email if you want at {{#> faux-code}}mica @ domain of this site{{/faux-code}}. [My pronouns are "they/them" in English.](/pronouns)
 
 <script>
 (() => {
