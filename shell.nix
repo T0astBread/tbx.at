@@ -10,7 +10,7 @@ let
   serve = writeShellScriptBin "serve" ''
     trap 'kill "$caddy_pid"' EXIT
     mkdir -p build
-    ${caddy}/bin/caddy file-server -listen :8080 -root build &
+    ${caddy}/bin/caddy file-server --listen :8080 --root build &
     readonly caddy_pid="$!"
     wait "$caddy_pid"
   '';
