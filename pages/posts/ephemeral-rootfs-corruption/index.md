@@ -188,4 +188,4 @@ And the config that's responsible for defining mounted filesystems and performin
 
 Whether anything is gained by putting the `meta` filesystem in a LUKS partition is debatable but I'm using `boot.initrd.luks.reusePassphrases` to avoid having to enter two passphrases, so I don't see a huge downside either other than taking a few seconds longer to boot. Of course you're free to set up your system however you like.
 
-Notice anything wrong with this setup? Feel free to send me an email at `mica @ domain of this site`.
+Notice anything wrong with this setup? Feel free to send me an email at `mica @ domain of this site`. There's also a [thread on the NixOS Discourse](https://discourse.nixos.org/t/avoiding-filesystem-corruption-with-hibernation-and-ephemeral-root/28810) for this post.
